@@ -18,6 +18,12 @@ namespace TutorialASPNETCore.Repositories
                     id = 1,
                     email = "seba.zonta@gmail.com",
                     name = "seba"
+                },
+                new Employee()
+                {
+                    id=2,
+                    email="utn@rosariobus.com",
+                    name="UTN"
                 }
             };
 
