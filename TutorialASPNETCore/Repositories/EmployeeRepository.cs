@@ -32,6 +32,11 @@ namespace TutorialASPNETCore.Repositories
         {
             return _employees.FirstOrDefault(e => e.id == id);   
         }
+
+        public IEnumerable<Employee> GetEmployees()
+        {
+            return _employees;
+        }
     }
       
     

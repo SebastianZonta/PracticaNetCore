@@ -8,5 +8,6 @@ namespace TutorialASPNETCore.Models
     public interface IEmployeeRepository
     {
         Employee getEmployee(int id);
+        IEnumerable<Employee> GetEmployees();
     }
 }
