@@ -1,0 +1,25 @@
+﻿@model IEnumerable<TutorialASPNETCore.Models.Employee>
+@{
+    Layout= "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title= "Lista de empleados";
+}
+<table>
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.id.</td>
+                <td>@item.name.</td>
+                <td>@item.email</td>
+            </tr>
+        }
+
+    </tbody>
+</table>

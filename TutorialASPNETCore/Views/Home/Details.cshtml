@@ -1,9 +1,15 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <title> aaaaaaaaaaaaaa</title>
-</head>
-<body>
-    <h1>Holis mi primera vista</h1>
-</body>
-</html>
+﻿@model TutorialASPNETCore.ViewModels.HomeDetailsViewModel
+@{
+    Layout = "~/Views/Shared/_Layour.cshtml";
+    ViewBag.Title= "Lista de empleados";
+}
+<h3>@Model.PageTitle</h3>
+<div>
+    Name: @Model.employee.name
+</div>
+<div>
+    Email:@Model.employee.email
+</div>
+@section scripts{ 
+    <script src="~/js/archivito.js"></script>
+}

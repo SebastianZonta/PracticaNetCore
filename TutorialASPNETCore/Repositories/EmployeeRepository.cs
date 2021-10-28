@@ -18,6 +18,12 @@ namespace TutorialASPNETCore.Repositories
                     id = 1,
                     email = "seba.zonta@gmail.com",
                     name = "seba"
+                },
+                new Employee()
+                {
+                    id=2,
+                    email="utn@rosariobus.com",
+                    name="UTN"
                 }
             };
 
@@ -25,6 +31,11 @@ namespace TutorialASPNETCore.Repositories
         public Employee getEmployee(int id)
         {
             return _employees.FirstOrDefault(e => e.id == id);   
+        }
+
+        public IEnumerable<Employee> GetEmployees()
+        {
+            return _employees;
         }
     }
       
