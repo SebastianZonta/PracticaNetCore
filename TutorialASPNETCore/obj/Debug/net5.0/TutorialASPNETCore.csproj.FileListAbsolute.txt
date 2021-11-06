@@ -68,3 +68,6 @@ C:\Users\seba_\source\repos\Repaso-.net-framework\PracticaNetCore\TutorialASPNET
 C:\Users\seba_\source\repos\Repaso-.net-framework\PracticaNetCore\TutorialASPNETCore\obj\Debug\net5.0\TutorialASPNETCore.genruntimeconfig.cache
 C:\Users\seba_\source\repos\Repaso-.net-framework\PracticaNetCore\TutorialASPNETCore\obj\Debug\net5.0\TutorialASPNETCore.csproj.CopyComplete
 C:\Users\seba_\source\repos\Repaso-.net-framework\PracticaNetCore\TutorialASPNETCore\obj\Debug\net5.0\TutorialASPNETCore.csproj.AssemblyReference.cache
+C:\Users\Seba\source\repos\TutorialASPNETCore\TutorialASPNETCore\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
+C:\Users\Seba\source\repos\TutorialASPNETCore\TutorialASPNETCore\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs
+C:\Users\Seba\source\repos\TutorialASPNETCore\TutorialASPNETCore\obj\Debug\net5.0\Razor\Views\_ViewImports.cshtml.g.cs
