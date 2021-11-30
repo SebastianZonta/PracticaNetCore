@@ -19,7 +19,7 @@ namespace TutorialASPNETCore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(e=> e.EnableEndpointRouting=false);
-            services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+            services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
             
         }
 
@@ -33,15 +33,9 @@ namespace TutorialASPNETCore
 
             app.UseRouting();
             app.UseStaticFiles();
-            app.UseMvcWithDefaultRoute();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
-            });
+             app.UseMvcWithDefaultRoute();
+            //app.UseMvc();
+            
         }
     }
 }

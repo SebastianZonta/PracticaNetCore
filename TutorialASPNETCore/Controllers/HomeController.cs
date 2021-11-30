@@ -9,7 +9,7 @@ using TutorialASPNETCore.ViewModels;
 
 namespace TutorialASPNETCore.Controllers
 {
-    ////[Route("[controller]/[action]")]
+    
     public class HomeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
@@ -19,16 +19,19 @@ namespace TutorialASPNETCore.Controllers
             _employeeRepository = employeeRepository;
            
         }
+        
+        
         public IActionResult Index()
         {
              return View(_employeeRepository.GetEmployees());
            
         }
-        public IActionResult Details()
+        
+        public IActionResult Details(int? id)
         {
             HomeDetailsViewModel homeDetailsView = new()
             {
-                employee = _employeeRepository.getEmployee(1),
+                employee = _employeeRepository.getEmployee(id??1),
                 PageTitle = "Employee details"
             };
             return View(homeDetailsView);

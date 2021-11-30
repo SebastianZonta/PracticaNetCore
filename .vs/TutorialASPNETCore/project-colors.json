@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "f23b7ba5-e019-4c9c-bac2-1dc8b080bd88": {
+      "ProjectGuid": "f23b7ba5-e019-4c9c-bac2-1dc8b080bd88",
+      "DisplayName": "TutorialASPNETCore",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}
