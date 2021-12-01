@@ -33,8 +33,11 @@ namespace TutorialASPNETCore
 
             app.UseRouting();
             app.UseStaticFiles();
-             app.UseMvcWithDefaultRoute();
-            //app.UseMvc();
+            
+            app.UseMvc(route=>
+            {
+                route.MapRoute("default", "{controller}/{action}/{id?}");
+            });
             
         }
     }
