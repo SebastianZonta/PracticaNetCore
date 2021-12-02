@@ -37,5 +37,9 @@ namespace TutorialASPNETCore.Controllers
             return View(homeDetailsView);
             
         }
+        public IActionResult Create()
+        {
+            return View();
+        }
     }
 }

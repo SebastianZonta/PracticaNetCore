@@ -10,5 +10,6 @@ namespace TutorialASPNETCore.Models
         public int id { get; set; }
         public string name { get; set; }
         public string email { get; set; }
+        public Department Department { get; set; }
     }
 }
