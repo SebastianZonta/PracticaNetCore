@@ -30,6 +30,14 @@ namespace TutorialASPNETCore.Repositories
             };
 
         }
+
+        public Employee Add(Employee employee)
+        {
+            employee.id= _employees.Max(x => x.id) + 1;
+            _employees.Add(employee);
+            return employee;
+        }
+
         public Employee getEmployee(int id)
         {
             return _employees.FirstOrDefault(e => e.id == id);   
