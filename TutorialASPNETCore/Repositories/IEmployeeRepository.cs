@@ -10,5 +10,8 @@ namespace TutorialASPNETCore.Models
         Employee getEmployee(int id);
         IEnumerable<Employee> GetEmployees();
         Employee Add(Employee employee); 
+        Employee Update(Employee employee);
+        void Delete(Employee employee);
+
     }
 }

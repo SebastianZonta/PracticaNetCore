@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TutorialASPNETCore.Context;
 using TutorialASPNETCore.Models;
 
 namespace TutorialASPNETCore.Repositories
@@ -38,6 +40,11 @@ namespace TutorialASPNETCore.Repositories
             return employee;
         }
 
+        public void Delete(Employee employee)
+        {
+            _employees.Remove(employee);
+        }
+
         public Employee getEmployee(int id)
         {
             return _employees.FirstOrDefault(e => e.id == id);   
@@ -46,6 +53,19 @@ namespace TutorialASPNETCore.Repositories
         public IEnumerable<Employee> GetEmployees()
         {
             return _employees;
+        }
+
+        public Employee Update(Employee employee)
+        {
+            var emplo=_employees.Where(e=>e.id==employee.id).FirstOrDefault();
+            employee.id= emplo.id;
+            employee.email= emplo.email;
+            employee.name= emplo.name;
+            employee.Department= emplo.Department;
+            TutorialContext context = new TutorialContext();
+            var empleado=context.employees.Attach(employee);
+            empleado.State = EntityState.Modified;
+            return employee;
         }
     }
       
