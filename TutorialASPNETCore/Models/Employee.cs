@@ -16,5 +16,6 @@ namespace TutorialASPNETCore.Models
         public string email { get; set; }
         [Required]
         public Department? Department { get; set; }
+        public string photoPath { get; set; }
     }
 }
