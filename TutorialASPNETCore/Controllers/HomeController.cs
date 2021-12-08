@@ -32,8 +32,15 @@ namespace TutorialASPNETCore.Controllers
 
         }
 
-        public IActionResult Details(int? id, string name)
+        public IActionResult Details(int? id)
         {
+            throw new Exception("a");
+            var employee = _employeeRepository.getEmployee(id.Value);
+            if (employee is null)
+            {
+                Response.StatusCode = 404;
+                return View("EmployeeNotFound",id.Value);
+            }
             HomeDetailsViewModel homeDetailsView = new()
             {
                 employee = _employeeRepository.getEmployee(id ?? 1),
@@ -125,7 +132,11 @@ namespace TutorialASPNETCore.Controllers
                     string uploadFolder = Path.Combine(_hosting.WebRootPath, "images");
                     fileName = Guid.NewGuid().ToString() + "_" + employee.photoPath.FileName;
                     String filePath = Path.Combine(uploadFolder, fileName);
-                    employee.photoPath.CopyTo(new FileStream(filePath, FileMode.Create));
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        employee.photoPath.CopyTo(stream);
+
+                    }
 
                 }
                 Employee emplo = new Employee()
