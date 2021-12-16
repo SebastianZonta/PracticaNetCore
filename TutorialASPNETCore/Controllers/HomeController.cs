@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,29 +17,35 @@ namespace TutorialASPNETCore.Controllers
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IWebHostEnvironment _hosting;
+        private readonly ILogger<HomeController> logger;
 
         public HomeController(IEmployeeRepository employeeRepository,
-                                IWebHostEnvironment hostingEnvironment)
+                                IWebHostEnvironment hostingEnvironment,
+                                ILogger<HomeController> logger)
         {
             _employeeRepository = employeeRepository;
             _hosting = hostingEnvironment;
-
+            this.logger = logger;
         }
 
 
         public IActionResult Index()
         {
+            logger.LogInformation("aaaaaaa information");
+            logger.LogWarning("bbbb warning");
             return View(_employeeRepository.GetEmployees());
 
         }
 
         public IActionResult Details(int? id)
         {
-            throw new Exception("a");
+            //throw new Exception("no pasas");
             var employee = _employeeRepository.getEmployee(id.Value);
             if (employee is null)
             {
                 Response.StatusCode = 404;
+ 
+                
                 return View("EmployeeNotFound",id.Value);
             }
             HomeDetailsViewModel homeDetailsView = new()

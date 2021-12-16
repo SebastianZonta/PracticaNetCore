@@ -11,9 +11,6 @@ namespace TutorialASPNETCore.Context
         {
 
         }
-        public TutorialContext()
-        {
-
-        }
+       
     }
 }

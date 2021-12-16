@@ -10,9 +10,11 @@ namespace TutorialASPNETCore.Repositories
 {
     public class EmployeeRepository : IEmployeeRepository
     {
+        private readonly TutorialContext context;
         private List<Employee> _employees;
-        public EmployeeRepository()
+        public EmployeeRepository(TutorialContext context)
         {
+            this.context = context;
             _employees = new List<Employee>()
             {
                 new Employee()
@@ -30,41 +32,41 @@ namespace TutorialASPNETCore.Repositories
                     Department = Department.HR
                 }
             };
-
+            this.context = context;
         }
 
         public Employee Add(Employee employee)
         {
-            employee.id= _employees.Max(x => x.id) + 1;
-            _employees.Add(employee);
+            context.Add(employee);
+            context.SaveChanges();
             return employee;
         }
 
         public void Delete(Employee employee)
         {
-            _employees.Remove(employee);
+            context.Remove(employee);
+            context.SaveChanges();
         }
 
         public Employee getEmployee(int id)
         {
-            return _employees.FirstOrDefault(e => e.id == id);   
+            return context.employees.FirstOrDefault(e => e.id == id);   
         }
 
         public IEnumerable<Employee> GetEmployees()
         {
-            return _employees;
+            return context.employees.ToList();
         }
 
         public Employee Update(Employee employee)
         {
-            var emplo=_employees.Where(e=>e.id==employee.id).FirstOrDefault();
+            var emplo=context.employees.Where(e=>e.id==employee.id).FirstOrDefault();
             employee.id= emplo.id;
             employee.email= emplo.email;
             employee.name= emplo.name;
             employee.Department= emplo.Department;
-            TutorialContext context = new TutorialContext();
-            var empleado=context.employees.Attach(employee);
-            empleado.State = EntityState.Modified;
+            context.Update(employee);
+            context.SaveChanges();
             return employee;
         }
     }
