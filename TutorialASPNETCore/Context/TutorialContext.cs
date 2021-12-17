@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using TutorialASPNETCore.Models;
 
 namespace TutorialASPNETCore.Context
 {
-    public class TutorialContext : DbContext
+    public class TutorialContext : IdentityDbContext
 
     {
         public DbSet<Employee> employees { get; set; }
@@ -11,6 +13,12 @@ namespace TutorialASPNETCore.Context
         {
 
         }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            
+        }
        
+
     }
 }

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +31,7 @@ namespace TutorialASPNETCore
             services.AddDbContextPool<TutorialContext>(options => options.UseSqlServer(_config.GetConnectionString("NET")));
             services.AddMvc(e=> e.EnableEndpointRouting=false);
             services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
+            services.AddIdentity<IdentityUser,IdentityRole>().AddEntityFrameworkStores<TutorialContext>();
             
         }
 
@@ -48,7 +50,7 @@ namespace TutorialASPNETCore
 
             app.UseRouting();
             app.UseStaticFiles();
-
+            app.UseAuthentication();
             //app.UseMvc(route=>
             //{
             //    route.MapRoute("default", "{controller}/{action}/{id?}");
