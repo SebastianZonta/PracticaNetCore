@@ -13,7 +13,7 @@ namespace TutorialASPNETCore.Controllers
         {
             this.logger = logger;
         }
-        [Route("Error/{statuscode}")]
+        [Route("/Error/{statuscode}")]
         public IActionResult HttpHandler(int statuscode)
         {
             var statusCodeResult = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
@@ -25,7 +25,7 @@ namespace TutorialASPNETCore.Controllers
                     break;
                 
             }
-            return View("Not found");
+            return View("Notfound");
         }
         [Route("/Error")]
         [AllowAnonymous]

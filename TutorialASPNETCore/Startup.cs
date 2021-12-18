@@ -31,7 +31,17 @@ namespace TutorialASPNETCore
             services.AddDbContextPool<TutorialContext>(options => options.UseSqlServer(_config.GetConnectionString("NET")));
             services.AddMvc(e=> e.EnableEndpointRouting=false);
             services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
-            services.AddIdentity<IdentityUser,IdentityRole>().AddEntityFrameworkStores<TutorialContext>();
+            services.AddIdentity<IdentityUser,IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 3;
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+
+
+            }).AddEntityFrameworkStores<TutorialContext>();
+            
             
         }
 
@@ -45,7 +55,7 @@ namespace TutorialASPNETCore
             else
             {
                 app.UseExceptionHandler("/Error");
-                app.UseStatusCodePagesWithReExecute("Error/{0}");
+                app.UseStatusCodePagesWithReExecute("/Error/{0}");
             }
 
             app.UseRouting();
