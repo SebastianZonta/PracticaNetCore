@@ -62,4 +62,3 @@ C:\Users\Seba\source\repos\TutorialASPNETCore\TutorialASPNETCore\obj\Debug\net6.
 C:\Users\Seba\source\repos\TutorialASPNETCore\TutorialASPNETCore\obj\Debug\net6.0\ref\TutorialASPNETCore.dll
 C:\Users\Seba\source\repos\TutorialASPNETCore\TutorialASPNETCore\obj\Debug\net6.0\TutorialASPNETCore.pdb
 C:\Users\Seba\source\repos\TutorialASPNETCore\TutorialASPNETCore\obj\Debug\net6.0\TutorialASPNETCore.genruntimeconfig.cache
-C:\Users\Seba\source\repos\TutorialASPNETCore\TutorialASPNETCore\obj\Debug\net6.0\TutorialASPNETCore.csproj.AssemblyReference.cache

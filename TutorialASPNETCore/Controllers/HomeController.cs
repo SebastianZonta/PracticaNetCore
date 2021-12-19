@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,7 +14,7 @@ using TutorialASPNETCore.ViewModels;
 
 namespace TutorialASPNETCore.Controllers
 {
-
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepository;
@@ -28,7 +30,7 @@ namespace TutorialASPNETCore.Controllers
             this.logger = logger;
         }
 
-
+        [AllowAnonymous]
         public IActionResult Index()
         {
             logger.LogInformation("aaaaaaa information");
@@ -36,17 +38,17 @@ namespace TutorialASPNETCore.Controllers
             return View(_employeeRepository.GetEmployees());
 
         }
-
-        public IActionResult Details(int? id)
+        [AllowAnonymous]
+        public IActionResult Details(int? id, string name)
         {
-            //throw new Exception("no pasas");
+
             var employee = _employeeRepository.getEmployee(id.Value);
             if (employee is null)
             {
                 Response.StatusCode = 404;
- 
-                
-                return View("EmployeeNotFound",id.Value);
+
+
+                return View("EmployeeNotFound", id.Value);
             }
             HomeDetailsViewModel homeDetailsView = new()
             {
@@ -57,11 +59,13 @@ namespace TutorialASPNETCore.Controllers
 
         }
         [HttpGet]
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
         [HttpGet]
+        [Authorize]
         public IActionResult Edit(int id)
         {
 
@@ -76,6 +80,8 @@ namespace TutorialASPNETCore.Controllers
             };
             return View(employeeEditViewModel);
         }
+        [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Edit(EmployeeEditViewModel employee)
         {
             if (ModelState.IsValid)
@@ -90,7 +96,7 @@ namespace TutorialASPNETCore.Controllers
                 {
                     if (employee.existingPhoto != null)
                     {
-                        string filePath=Path.Combine(_hosting.WebRootPath, "images", employee.existingPhoto);
+                        string filePath = Path.Combine(_hosting.WebRootPath, "images", employee.existingPhoto);
                         System.IO.File.Delete(filePath);
                     }
                     employee1.photoPath = this.processUserPhoto(employee);
@@ -127,6 +133,7 @@ namespace TutorialASPNETCore.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(CreateEmployeeViewModel employee)
         {
             if (ModelState.IsValid)

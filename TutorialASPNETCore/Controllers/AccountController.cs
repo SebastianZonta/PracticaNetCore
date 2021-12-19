@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using TutorialASPNETCore.ViewModels;
@@ -17,11 +18,13 @@ namespace TutorialASPNETCore.Controllers
             _signInManager = signInManager;
         }
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult>Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -42,24 +45,33 @@ namespace TutorialASPNETCore.Controllers
             return View();
         }
         [HttpPost]
+      
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("index","home");
         }
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult LogIn()
         {
             return View();
         }
+#nullable enable
         [HttpPost]
-        public async Task<IActionResult> LogIn(LogInViewModel model)
+        [AllowAnonymous]
+        public async Task<IActionResult> LogIn( LogInViewModel model, string? ReturnUrl)
         {
+            
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(model.email,model.password,model.rememberMe,false);
                 if (result.Succeeded)
                 {
+                    if (!string.IsNullOrEmpty(ReturnUrl))
+                    {
+                        return Redirect(ReturnUrl);
+                    }
                     return RedirectToAction("index", "home");
                 }
                ModelState.AddModelError("", "invalid log attempt");
@@ -68,5 +80,6 @@ namespace TutorialASPNETCore.Controllers
             }
             return View();
         }
+#nullable disable
     }
 }

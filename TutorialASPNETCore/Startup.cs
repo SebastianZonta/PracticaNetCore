@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,8 +31,22 @@ namespace TutorialASPNETCore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContextPool<TutorialContext>(options => options.UseSqlServer(_config.GetConnectionString("NET")));
-            services.AddMvc(e=> e.EnableEndpointRouting=false);
+            services.AddMvc(e=>
+            {
+                e.EnableEndpointRouting = false;
+                var policy=new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+                e.Filters.Add(new AuthorizeFilter(policy));
+
+
+                
+            });
             services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
+            services.AddAuthorization(options=>
+            {
+                
+            });
             services.AddIdentity<IdentityUser,IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 3;
@@ -41,8 +57,14 @@ namespace TutorialASPNETCore
 
 
             }).AddEntityFrameworkStores<TutorialContext>();
-            
-            
+            //services.ConfigureApplicationCookie(options =>
+            //{
+            //    options.AccessDeniedPath = "/login";
+            //    options.LoginPath = "/login";
+            //    options.LogoutPath = "/logout";
+            //});
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,9 +80,10 @@ namespace TutorialASPNETCore
                 app.UseStatusCodePagesWithReExecute("/Error/{0}");
             }
 
-            app.UseRouting();
+            //app.UseRouting();
             app.UseStaticFiles();
             app.UseAuthentication();
+         
             //app.UseMvc(route=>
             //{
             //    route.MapRoute("default", "{controller}/{action}/{id?}");
