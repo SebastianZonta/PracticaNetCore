@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace TutorialASPNETCore.ViewModels
 {
@@ -6,6 +7,7 @@ namespace TutorialASPNETCore.ViewModels
     {
         [Required]
         [EmailAddress]
+        [Remote(action: "isEmailInUse", "Account")]
         public string email { get; set; }
         [Required]
         [DataType(DataType.Password)]

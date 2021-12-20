@@ -17,6 +17,17 @@ namespace TutorialASPNETCore.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
+        [HttpGet][HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> isEmailInUse(string email)
+        {
+            var user=await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return Json(true);
+            }
+            return Json($"The provided email is already in use");
+        }
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Register()
@@ -68,7 +79,7 @@ namespace TutorialASPNETCore.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.email,model.password,model.rememberMe,false);
                 if (result.Succeeded)
                 {
-                    if (!string.IsNullOrEmpty(ReturnUrl))
+                    if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
                     {
                         return Redirect(ReturnUrl);
                     }

@@ -38,11 +38,11 @@ namespace TutorialASPNETCore
                 .RequireAuthenticatedUser()
                 .Build();
                 e.Filters.Add(new AuthorizeFilter(policy));
-
+             
 
                 
             });
-            services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
+            services.AddTransient<IEmployeeRepository, EmployeeRepository>();
             services.AddAuthorization(options=>
             {
                 
