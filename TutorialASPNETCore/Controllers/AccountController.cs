@@ -2,17 +2,18 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using TutorialASPNETCore.Models;
 using TutorialASPNETCore.ViewModels;
 
 namespace TutorialASPNETCore.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public AccountController(UserManager<IdentityUser> userManager,
-                                    SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager,
+                                    SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -40,7 +41,13 @@ namespace TutorialASPNETCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user= new IdentityUser { Email=model.email, UserName=model.email};
+                bool existeUser = await _userManager.FindByEmailAsync(model.email)!=null;
+                if (existeUser)
+                {
+                    ModelState.AddModelError("","ya existe ese usuario ingrese otro email por favor");
+                    return View();
+                }
+                var user= new ApplicationUser { Email=model.email, UserName=model.email,city=model.city};
                 var result=await _userManager.CreateAsync(user,model.password);
                 if (result.Succeeded)
                 {

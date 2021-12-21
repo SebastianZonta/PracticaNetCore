@@ -47,7 +47,7 @@ namespace TutorialASPNETCore
             {
                 
             });
-            services.AddIdentity<IdentityUser,IdentityRole>(options =>
+            services.AddIdentity<ApplicationUser,IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 3;
                 options.Password.RequiredUniqueChars = 0;
