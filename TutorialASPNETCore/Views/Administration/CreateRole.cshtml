@@ -1,0 +1,17 @@
+﻿@model CreateRolViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" asp-action="CreateRole" asp-controller="administration" class="mt-3">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="rolName"></label>
+                <input asp-for="rolName" class="form-control" />
+                <span asp-validation-for="rolName" class="text-danger"></span>
+            </div>
+           <button style="width:auto" type="submit" class="btn btn-primary">Create Rol</button>
+        </form>
+    </div>
+</div>
