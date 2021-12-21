@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TutorialASPNETCore.Models;
 using TutorialASPNETCore.ViewModels;
@@ -11,12 +13,15 @@ namespace TutorialASPNETCore.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<ApplicationUser> roleManager;
 
         public AccountController(UserManager<ApplicationUser> userManager,
-                                    SignInManager<ApplicationUser> signInManager)
+                                    SignInManager<ApplicationUser> signInManager,
+                                    RoleManager<ApplicationUser> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            this.roleManager = roleManager;
         }
         [HttpGet][HttpPost]
         [AllowAnonymous]
@@ -99,5 +104,27 @@ namespace TutorialASPNETCore.Controllers
             return View();
         }
 #nullable disable
+        public async Task<IActionResult> EditUsersInRole(string roleId)
+        {
+            ViewBag.roleId = roleId;
+            var role= await roleManager.FindByIdAsync(roleId);
+            if (role == null)
+            {
+                ViewBag.ErrorMessage = $"Role with id {roleId} didn't exists";
+                return View("NotFound");
+            }
+            var model = new List<UserRolViewModel>();
+            foreach (var user in await _userManager.Users.ToListAsync())
+            {
+                var userRol = new UserRolViewModel
+                {
+                    userId=user.Id,
+                    userName=user.UserName
+                };
+                if(await _userManager.IsInRoleAsync(user, role.))
+            }
+
+
+        }
     }
 }
