@@ -8,7 +8,7 @@ namespace TutorialASPNETCore.Context
         public TutorialContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<TutorialContext>();
-            optionsBuilder.UseSqlServer("Data Source=DESKTOP-U2M982S\\SQLEXPRESS;Initial Catalog=tutorial;Integrated Security=True");
+            optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-0GORJAP\SQLEXPRESS;Initial Catalog=tutorial;Integrated Security=True");
 
             return new TutorialContext(optionsBuilder.Options);
         }

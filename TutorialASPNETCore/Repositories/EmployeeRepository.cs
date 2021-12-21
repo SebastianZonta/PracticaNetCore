@@ -37,6 +37,7 @@ namespace TutorialASPNETCore.Repositories
 
         public Employee Add(Employee employee)
         {
+           
             context.Add(employee);
             context.SaveChanges();
             return employee;

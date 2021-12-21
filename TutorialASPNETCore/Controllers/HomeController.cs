@@ -68,7 +68,6 @@ namespace TutorialASPNETCore.Controllers
         [Authorize]
         public IActionResult Edit(int id)
         {
-
             Employee employee = _employeeRepository.getEmployee(id);
             EmployeeEditViewModel employeeEditViewModel = new()
             {
@@ -136,6 +135,7 @@ namespace TutorialASPNETCore.Controllers
         [Authorize]
         public async Task<IActionResult> Create(CreateEmployeeViewModel employee)
         {
+            
             if (ModelState.IsValid)
             {
                 string fileName = null;
