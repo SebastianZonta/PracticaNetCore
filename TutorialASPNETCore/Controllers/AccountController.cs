@@ -104,27 +104,6 @@ namespace TutorialASPNETCore.Controllers
             return View();
         }
 #nullable disable
-        public async Task<IActionResult> EditUsersInRole(string roleId)
-        {
-            ViewBag.roleId = roleId;
-            var role= await roleManager.FindByIdAsync(roleId);
-            if (role == null)
-            {
-                ViewBag.ErrorMessage = $"Role with id {roleId} didn't exists";
-                return View("NotFound");
-            }
-            var model = new List<UserRolViewModel>();
-            foreach (var user in await _userManager.Users.ToListAsync())
-            {
-                var userRol = new UserRolViewModel
-                {
-                    userId=user.Id,
-                    userName=user.UserName
-                };
-                if(await _userManager.IsInRoleAsync(user, role.))
-            }
-
-
-        }
+        
     }
 }
