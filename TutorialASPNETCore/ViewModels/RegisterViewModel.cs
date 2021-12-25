@@ -9,7 +9,7 @@ namespace TutorialASPNETCore.ViewModels
         [Required]
         [EmailAddress]
         [Remote(action: "isEmailInUse", "Account")]
-        [ValidEmailDomain(allowedDomain:"puta.com",ErrorMessage ="No cumple con puta.com")]
+       // [ValidEmailDomain(allowedDomain:"puta.com",ErrorMessage ="No cumple con puta.com")]
         public string email { get; set; }
         [Required]
         [DataType(DataType.Password)]

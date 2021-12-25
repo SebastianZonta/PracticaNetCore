@@ -45,10 +45,17 @@ namespace TutorialASPNETCore
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
             services.AddAuthorization(options=>
             {
-                
+               
             });
             
-            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<TutorialContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>(e=>
+            {
+                e.Password.RequiredLength = 1;
+                e.Password.RequiredUniqueChars = 0;
+                e.Password.RequireLowercase = false;
+                e.Password.RequireUppercase = false;
+                e.Password.RequireNonAlphanumeric = false;
+            }).AddEntityFrameworkStores<TutorialContext>();
             //services.ConfigureApplicationCookie(options =>
             //{
             //    options.AccessDeniedPath = "/login";

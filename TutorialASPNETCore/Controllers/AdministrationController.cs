@@ -23,6 +23,22 @@ namespace TutorialASPNETCore.Controllers
             this.roleManager = roleManager;
             this.userManager = userManager;
         }
+        public async Task<IActionResult> Delete(string id)
+        {
+            var user=await userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = "Don't exists the user";
+                return View("NotFound");
+            }
+            var result=await userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+            foreach (var item in result.Errors)
+            {
+                ModelState.AddModelError("", item.Description);
+            }
+            return RedirectToAction("ListUsers");
+        }
         [HttpGet]
         public async Task<IActionResult> EditUser(string id)
         {
