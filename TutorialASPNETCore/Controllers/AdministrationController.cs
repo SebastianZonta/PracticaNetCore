@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using TutorialASPNETCore.ViewModels;
 
 namespace TutorialASPNETCore.Controllers
 {
+     [Authorize(Roles ="Admin")]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
@@ -20,6 +22,72 @@ namespace TutorialASPNETCore.Controllers
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
+        }
+        [HttpGet]
+        public async Task<IActionResult> EditUser(string id)
+        {
+            var user = await userManager.FindByIdAsync(id);
+            
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {id} cannot be found";
+                return View("NotFound");
+            }
+
+            // GetClaimsAsync returns the list of user Claims
+            var userClaims = await userManager.GetClaimsAsync(user);
+            // GetRolesAsync returns the list of user Roles
+            var userRoles = await userManager.GetRolesAsync(user);
+
+            var model = new EditUserViewModel
+            {
+                Id = user.Id,
+                Email = user.Email,
+                UserName = user.UserName,
+                City = user.city,
+                Claims = userClaims.Select(c => c.Value).ToList(),
+                Roles = userRoles
+            };
+
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditUser(EditUserViewModel model)
+        {
+            var user = await userManager.FindByIdAsync(model.Id);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {model.Id} cannot be found";
+                return View("NotFound");
+            }
+            else
+            {
+                user.Email = model.Email;
+                user.UserName = model.UserName;
+                user.city = model.City;
+
+                var result = await userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListUsers");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+
+                return View(model);
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> ListUsers()
+        {
+            var users = await userManager.Users.ToListAsync();
+            return View(users);
         }
         [HttpGet]
         public IActionResult CreateRole()
@@ -48,15 +116,17 @@ namespace TutorialASPNETCore.Controllers
             return View(model);
         }
         [HttpGet]
-        public async Task<IActionResult> ListRoles()
+        public IActionResult ListRoles()
         {
+ 
             var roles = roleManager.Roles;
             return View(roles);
+
         }
         [HttpGet]
         public async Task<IActionResult> EditRole(string id)
         {
-            var role=await roleManager.FindByIdAsync(id);
+            var role = await roleManager.FindByIdAsync(id);
             if (role == null)
             {
                 ViewBag.ErrorMessage = $"Role with id {id} doesn't exists";
@@ -66,7 +136,7 @@ namespace TutorialASPNETCore.Controllers
             {
                 id = id,
                 nameRole = role.Name
-               
+
             };
             foreach (var item in await userManager.Users.ToListAsync())
             {
@@ -81,8 +151,8 @@ namespace TutorialASPNETCore.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateRole(EditRoleViewModel model)
         {
-            
-            
+
+
             var role = await roleManager.FindByIdAsync(model.id);
             if (role == null)
             {
@@ -91,8 +161,8 @@ namespace TutorialASPNETCore.Controllers
             }
             else
             {
-                role.Name=model.nameRole;
-                var result=await roleManager.UpdateAsync(role);
+                role.Name = model.nameRole;
+                var result = await roleManager.UpdateAsync(role);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("ListRoles");
@@ -103,8 +173,8 @@ namespace TutorialASPNETCore.Controllers
                 }
                 return View(model);
             }
-            
-            
+
+
         }
         [HttpGet]
         public async Task<IActionResult> EditUsersInRole(string roleId)
@@ -173,7 +243,7 @@ namespace TutorialASPNETCore.Controllers
                     continue;
                 }
 
-                
+
             }
 
             return RedirectToAction("EditRole", new { Id = roleId });

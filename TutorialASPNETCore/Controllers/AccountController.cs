@@ -13,21 +13,23 @@ namespace TutorialASPNETCore.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly RoleManager<ApplicationUser> roleManager;
+
 
         public AccountController(UserManager<ApplicationUser> userManager,
-                                    SignInManager<ApplicationUser> signInManager,
-                                    RoleManager<ApplicationUser> roleManager)
+                                    SignInManager<ApplicationUser> signInManager
+                                    )
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            this.roleManager = roleManager;
+
         }
-        [HttpGet][HttpPost]
+
+        [HttpGet]
+        [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> isEmailInUse(string email)
         {
-            var user=await _userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
             {
                 return Json(true);
@@ -42,37 +44,41 @@ namespace TutorialASPNETCore.Controllers
         }
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult>Register(RegisterViewModel model)
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                bool existeUser = await _userManager.FindByEmailAsync(model.email)!=null;
+                bool existeUser = await _userManager.FindByEmailAsync(model.email) != null;
                 if (existeUser)
                 {
-                    ModelState.AddModelError("","ya existe ese usuario ingrese otro email por favor");
+                    ModelState.AddModelError("", "ya existe ese usuario ingrese otro email por favor");
                     return View();
                 }
-                var user= new ApplicationUser { Email=model.email, UserName=model.email,city=model.city};
-                var result=await _userManager.CreateAsync(user,model.password);
+                var user = new ApplicationUser { Email = model.email, UserName = model.email, city = model.city };
+                var result = await _userManager.CreateAsync(user, model.password);
                 if (result.Succeeded)
                 {
-                   await _signInManager.SignInAsync(user, isPersistent: false);
+                    if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        return RedirectToAction("ListUsers", "administration");
+                    }
+                    await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("index", "home");
                 }
                 foreach (var item in result.Errors)
                 {
                     ModelState.AddModelError("", item.Description);
                 }
-                
+
             }
             return View();
         }
         [HttpPost]
-      
+
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("index","home");
+            return RedirectToAction("index", "home");
         }
         [HttpGet]
         [AllowAnonymous]
@@ -83,12 +89,12 @@ namespace TutorialASPNETCore.Controllers
 #nullable enable
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> LogIn( LogInViewModel model, string? ReturnUrl)
+        public async Task<IActionResult> LogIn(LogInViewModel model, string? ReturnUrl)
         {
-            
+
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.email,model.password,model.rememberMe,false);
+                var result = await _signInManager.PasswordSignInAsync(model.email, model.password, model.rememberMe, false);
                 if (result.Succeeded)
                 {
                     if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
@@ -97,13 +103,13 @@ namespace TutorialASPNETCore.Controllers
                     }
                     return RedirectToAction("index", "home");
                 }
-               ModelState.AddModelError("", "invalid log attempt");
-                
+                ModelState.AddModelError("", "invalid log attempt");
+
 
             }
             return View();
         }
 #nullable disable
-        
+
     }
 }

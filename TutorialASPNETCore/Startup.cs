@@ -47,16 +47,8 @@ namespace TutorialASPNETCore
             {
                 
             });
-            services.AddIdentity<ApplicationUser,IdentityRole>(options =>
-            {
-                options.Password.RequiredLength = 3;
-                options.Password.RequiredUniqueChars = 0;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-
-
-            }).AddEntityFrameworkStores<TutorialContext>();
+            
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<TutorialContext>();
             //services.ConfigureApplicationCookie(options =>
             //{
             //    options.AccessDeniedPath = "/login";
