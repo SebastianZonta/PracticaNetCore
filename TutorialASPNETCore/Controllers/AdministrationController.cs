@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using TutorialASPNETCore.Models;
 using TutorialASPNETCore.ViewModels;
@@ -22,6 +23,69 @@ namespace TutorialASPNETCore.Controllers
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
+        }
+        [HttpGet]
+        public async Task<IActionResult> ManageUserClaims(string id)
+        {
+            var user = await userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return View("NotFound");
+            }
+            var Userclaims = await userManager.GetClaimsAsync(user);
+            var model = new UserClaimViewModel
+            {
+                userId=user.Id
+                
+            };
+            foreach (Claim claim in ClaimsStore.allClaims)
+            {
+                UserClaim userClaim = new UserClaim
+                {
+                    ClaimType = claim.Type
+                };
+                if (Userclaims.Any(e=>e.Type==claim.Type))
+                {
+                    userClaim.IsSelected = true;
+                }
+                model.userClaims.Add(userClaim);
+            }
+            return View(model);
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> ManageUserClaims(UserClaimViewModel model)
+        {
+            var user = await userManager.FindByIdAsync(model.userId);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {model.userId} cannot be found";
+                return View("NotFound");
+            }
+
+            // Get all the user existing claims and delete them
+            var claims = await userManager.GetClaimsAsync(user);
+            var result = await userManager.RemoveClaimsAsync(user, claims);
+
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "Cannot remove user existing claims");
+                return View(model);
+            }
+
+            // Add all the claims that are selected on the UI
+            result = await userManager.AddClaimsAsync(user,
+                model.userClaims.Where(c => c.IsSelected).Select(c => new Claim(c.ClaimType, c.ClaimType)));
+
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "Cannot add selected claims to user");
+                return View(model);
+            }
+
+            return RedirectToAction("EditUser", new { Id = model.userId });
+
         }
         public async Task<IActionResult> Delete(string id)
         {

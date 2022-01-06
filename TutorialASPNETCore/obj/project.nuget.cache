@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "mCDrwlgeFMGfrnKRKAxoRYUM4vowNO6d2pc9QMe3DQ1TL5jKSFhXzLbF3N1rHJiaHltq6neFgYfb1eLr0dK3zg==",
+  "dgSpecHash": "EWt2iSVq0AWdyS6SdYDuRQXMkGigYs+GJ0CfjEltzeDfiC/MN+IM5PSEpWopxb8Z7jZv8xFwuQJtkhb/DG5btg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Seba\\source\\repos\\PracticaNetCore\\TutorialASPNETCore\\TutorialASPNETCore.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Seba\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
+    "C:\\Users\\Seba\\.nuget\\packages\\microsoft.aspnetcore.authentication.google\\5.0.13\\microsoft.aspnetcore.authentication.google.5.0.13.nupkg.sha512",
     "C:\\Users\\Seba\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\5.0.13\\microsoft.aspnetcore.cryptography.internal.5.0.13.nupkg.sha512",
     "C:\\Users\\Seba\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\5.0.13\\microsoft.aspnetcore.cryptography.keyderivation.5.0.13.nupkg.sha512",
     "C:\\Users\\Seba\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\5.0.13\\microsoft.aspnetcore.identity.entityframeworkcore.5.0.13.nupkg.sha512",

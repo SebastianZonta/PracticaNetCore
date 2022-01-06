@@ -23,7 +23,7 @@ namespace TutorialASPNETCore.Controllers
             _signInManager = signInManager;
 
         }
-
+        
         [HttpGet]
         [HttpPost]
         [AllowAnonymous]
@@ -82,8 +82,11 @@ namespace TutorialASPNETCore.Controllers
         }
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult LogIn()
+        public async Task<IActionResult> LogIn(string returnUrl)
         {
+            LogInViewModel model = new LogInViewModel();
+            model.ReturnUrl = returnUrl;
+            model.ExternalLogins = await _signInManager.GetExternalAuthenticationSchemesAsync();
             return View();
         }
 #nullable enable

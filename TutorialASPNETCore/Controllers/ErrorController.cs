@@ -32,9 +32,7 @@ namespace TutorialASPNETCore.Controllers
         public IActionResult Error()
         {
             var exceptionDetails=HttpContext.Features.Get<IExceptionHandlerPathFeature>();
-            //ViewBag.ExceptionDetails = exceptionDetails.Path;
-            //ViewBag.Message = exceptionDetails.Error.Message;
-            //ViewBag.Stacktrace = exceptionDetails.Error.StackTrace;
+            
             logger.LogError($"The path{exceptionDetails.Path} threw an exception {exceptionDetails.Error}");
             return View("Error");
 

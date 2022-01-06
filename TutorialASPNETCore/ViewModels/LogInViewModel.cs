@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Authentication;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace TutorialASPNETCore.ViewModels
 {
@@ -12,5 +14,7 @@ namespace TutorialASPNETCore.ViewModels
         public string password { get; set; }
         [Display(Name ="Remember me")]
         public bool rememberMe { get; set; }
+        public string ReturnUrl { get; set; }
+        public IEnumerable<AuthenticationScheme> ExternalLogins { get; set; }
     }
 }

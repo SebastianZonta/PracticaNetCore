@@ -42,6 +42,15 @@ namespace TutorialASPNETCore
 
                 
             });
+            services.AddAuthentication().AddGoogle(options =>
+            {
+                options.ClientId = "1076546333611-7ofam5sc9kbs70s5rlgqtujujr9f6alr.apps.googleusercontent.com";
+                options.ClientSecret = "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";
+            });
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = new PathString("/Administration/AccessDenied");
+            });
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
             services.AddAuthorization(options=>
             {
