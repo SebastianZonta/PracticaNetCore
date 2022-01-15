@@ -1,5 +1,10 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    
+    //@ViewBag.Title= @ViewBag.ErrorTitle;
 }
-<h1>Todo se rompio</h1>
+<h1>
+    @ViewBag.ErrorTitle
+</h1>
+<h2>
+    @ViewBag.ErrorMessage
+</h2>

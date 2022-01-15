@@ -15,6 +15,6 @@ namespace TutorialASPNETCore.ViewModels
         [Display(Name ="Remember me")]
         public bool rememberMe { get; set; }
         public string ReturnUrl { get; set; }
-        public IEnumerable<AuthenticationScheme> ExternalLogins { get; set; }
+        public IList<AuthenticationScheme> ExternalLogins { get; set; }
     }
 }

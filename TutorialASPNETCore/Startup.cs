@@ -30,18 +30,20 @@ namespace TutorialASPNETCore
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<TutorialContext>(options => options.UseSqlServer(_config.GetConnectionString("NET")));
-            services.AddMvc(e=>
+            
+            services.AddDbContextPool<TutorialContext>(options => options.UseSqlServer(_config["NET"]));
+            services.AddMvc(e =>
             {
                 e.EnableEndpointRouting = false;
-                var policy=new AuthorizationPolicyBuilder()
+                var policy = new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()
                 .Build();
                 e.Filters.Add(new AuthorizeFilter(policy));
-             
 
-                
+
+
             });
+            
             services.AddAuthentication().AddGoogle(options =>
             {
                 options.ClientId = "1076546333611-7ofam5sc9kbs70s5rlgqtujujr9f6alr.apps.googleusercontent.com";
@@ -52,19 +54,21 @@ namespace TutorialASPNETCore
                 options.AccessDeniedPath = new PathString("/Administration/AccessDenied");
             });
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
-            services.AddAuthorization(options=>
+            services.AddAuthorization(options =>
             {
-               
+
             });
-            
-            services.AddIdentity<ApplicationUser, IdentityRole>(e=>
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(e =>
             {
                 e.Password.RequiredLength = 1;
                 e.Password.RequiredUniqueChars = 0;
                 e.Password.RequireLowercase = false;
                 e.Password.RequireUppercase = false;
                 e.Password.RequireNonAlphanumeric = false;
-            }).AddEntityFrameworkStores<TutorialContext>();
+                e.SignIn.RequireConfirmedEmail = true;
+            }).AddEntityFrameworkStores<TutorialContext>()
+            .AddDefaultTokenProviders();
             //services.ConfigureApplicationCookie(options =>
             //{
             //    options.AccessDeniedPath = "/login";
@@ -78,6 +82,7 @@ namespace TutorialASPNETCore
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -91,13 +96,13 @@ namespace TutorialASPNETCore
             //app.UseRouting();
             app.UseStaticFiles();
             app.UseAuthentication();
-         
+            app.UseAuthorization();
             //app.UseMvc(route=>
             //{
             //    route.MapRoute("default", "{controller}/{action}/{id?}");
             //});
             app.UseMvcWithDefaultRoute();
-            
+
         }
     }
 }

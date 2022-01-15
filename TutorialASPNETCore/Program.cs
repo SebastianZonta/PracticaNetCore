@@ -21,6 +21,10 @@ namespace TutorialASPNETCore
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                })
+            .ConfigureAppConfiguration((hostContext, builder) =>
+            {
+               builder.AddUserSecrets<Program>();
+            });
     }
 }
